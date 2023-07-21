@@ -18,10 +18,22 @@ export default class NewClass extends cc.Component {
     joyStickBg = null;
 
     /**
+     * 猫
+     */
+    @property(cc.Sprite)
+    catBg:cc.Sprite = null;
+
+    /**
      * 摇杆的半径
      */
     @property(cc.Float)
     radius = 130;
+
+     /**
+     * 移动速度
+     */
+     @property(cc.Float)
+     speed = 0.1;
 
     /**
      * 摇杆初始化的位置
@@ -78,6 +90,20 @@ export default class NewClass extends cc.Component {
         VirtualInput.horizontal = this.thumbnail.node.position.x / this.radius;
         VirtualInput.vertical = this.thumbnail.node.position.y / this.radius;
         //console.log(VirtualInput.horizontal, VirtualInput.vertical);
+        if(this.catBg!=null){
+            let directionVec = cc.v2(VirtualInput.horizontal, VirtualInput.vertical);
+            const threshold = 0.5; // 阈值，用于判断是否移动
+            if (directionVec.mag() > threshold) {
+                // 移动操作对象
+                directionVec.normalizeSelf(); // 将方向向量归一化，保持移动速度一致
+                let moveSpeed = this.speed; // 你可以自定义移动速度 speed
+                let moveDelta = directionVec.mul(moveSpeed);
+                if(this.catBg.node.x+moveDelta.x<this.catBg.node.parent.width/2)
+                this.catBg.node.x += moveDelta.x;
+                this.catBg.node.y += moveDelta.y;
+            }
+             
+        }
     }
 
     /**
@@ -92,5 +118,9 @@ export default class NewClass extends cc.Component {
 
         // 摇杆的位置回归到初始化位置
         this.joyStickBg.node.setPosition(this.initJoyStickBgPosition);
+    }
+
+    catRun(angleDeg,catNode:cc.Node){
+        if(angleDeg>-90&&angleDeg<90)
     }
 }
