@@ -33,7 +33,7 @@ export default class NewClass extends cc.Component {
      * 移动速度
      */
      @property(cc.Float)
-     speed = 0.1;
+     speed = 0.01;
 
     /**
      * 摇杆初始化的位置
@@ -98,9 +98,20 @@ export default class NewClass extends cc.Component {
                 directionVec.normalizeSelf(); // 将方向向量归一化，保持移动速度一致
                 let moveSpeed = this.speed; // 你可以自定义移动速度 speed
                 let moveDelta = directionVec.mul(moveSpeed);
-                if(this.catBg.node.x+moveDelta.x<this.catBg.node.parent.width/2)
-                this.catBg.node.x += moveDelta.x;
-                this.catBg.node.y += moveDelta.y;
+                console.debug("node.X="+this.catBg.node.x+",moveDelta.X="+moveDelta.x+"=======node.Y="+this.catBg.node.y+",moveDelta.Y="+moveDelta.y);
+                if(this.catBg.node.x+this.catBg.node.width/2+moveDelta.x<(-1)*this.catBg.node.parent.width/2){
+                    this.catBg.node.x+=5;
+                }else if(this.catBg.node.x+moveDelta.x<(-1)*this.catBg.node.parent.height/2){
+                    this.catBg.node.y+=5;
+                }else if(this.catBg.node.x-this.catBg.node.width/2+moveDelta.x>this.catBg.node.parent.width/2){
+                    this.catBg.node.x-=5;
+                }else if(this.catBg.node.x+moveDelta.x>this.catBg.node.parent.height/2){
+                    this.catBg.node.y-=5;
+                }else{
+                    this.catBg.node.x += moveDelta.x;
+                    this.catBg.node.y += moveDelta.y;
+                }
+               
             }
              
         }
@@ -120,7 +131,5 @@ export default class NewClass extends cc.Component {
         this.joyStickBg.node.setPosition(this.initJoyStickBgPosition);
     }
 
-    catRun(angleDeg,catNode:cc.Node){
-        if(angleDeg>-90&&angleDeg<90)
-    }
+    
 }
